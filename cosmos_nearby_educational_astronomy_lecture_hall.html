@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmos Nearby — Educational Astronomy Lecture Hall</title>
+    <!-- Google Fonts: Editorial Serif + Clean Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-hero: #07090f;
+            --bg-content: #f8f7f3;
+            --bg-register: #f2f1eb;
+            --bg-footer: #eae7df;
+            --text-main: #111827;
+            --text-muted: #555c68;
+            --text-light: #8891a0;
+            --accent-blue: #2b52db;
+            --accent-blue-hover: #1e3fae;
+            --card-bg: #ffffff;
+            --card-border: rgba(0, 0, 0, 0.08);
+            --pill-active-bg: #111827;
+            --pill-active-text: #ffffff;
+            --pill-inactive-bg: transparent;
+            --pill-inactive-text: #4b5563;
+            --pill-inactive-border: rgba(0, 0, 0, 0.18);
+        }
+
+        html.dark {
+            --bg-hero: #05070c;
+            --bg-content: #0b0f19;
+            --bg-register: #0f1422;
+            --bg-footer: #070a12;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-light: #6b7280;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --card-bg: #131b2e;
+            --card-border: rgba(255, 255, 255, 0.1);
+            --pill-active-bg: #3b82f6;
+            --pill-active-text: #ffffff;
+            --pill-inactive-bg: transparent;
+            --pill-inactive-text: #9ca3af;
+            --pill-inactive-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-content);
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header / Nav */
+        header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.75rem 0;
+        }
+
+        .nav-container {
+            max-width: 90rem;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .logo svg {
+            width: 2.1rem;
+            height: 2.1rem;
+            stroke: #38bdf8;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .nav-links {
+            display: none;
+            gap: 2.75rem;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .btn-ticket {
+            background-color: #2b52db;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-ticket:hover {
+            background-color: #1e3fae;
+            transform: translateY(-1px);
+        }
+
+        .burger-btn {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 101;
+        }
+
+        @media (min-width: 768px) {
+            .burger-btn {
+                display: none;
+            }
+        }
+
+        .burger-btn span {
+            display: block;
+            width: 1.5rem;
+            height: 0.125rem;
+            background-color: #ffffff;
+            transition: 0.3s;
+        }
+
+        /* Mobile Drawer */
+        .mobile-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 24rem;
+            height: 100vh;
+            background-color: #07090f;
+            z-index: 200;
+            padding: 5rem 2.5rem 2.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-drawer.active {
+            right: 0;
+        }
+
+        .mobile-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .mobile-links a {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .close-drawer {
+            position: absolute;
+            top: 1.75rem;
+            right: 2.5rem;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(rgba(7, 9, 15, 0.45), rgba(7, 9, 15, 0.82)),
+                        url('https://placehold.co/1920x1080/05070c/38bdf8?text=Andromeda+Galaxy+M31') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 8.5rem 2.5rem 3.5rem 2.5rem;
+            color: #ffffff;
+        }
+
+        .hero-top-info {
+            max-width: 90rem;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .hero-content {
+            max-width: 90rem;
+            width: 100%;
+            margin: auto auto;
+            padding: 4rem 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2.75rem, 6.5vw, 5.75rem);
+            font-weight: 700;
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            max-width: 58rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+            color: #cbd5e1;
+            max-width: 38rem;
+            margin-bottom: 2.75rem;
+            line-height: 1.65;
+            font-weight: 400;
+        }
+
+        .btn-schedule {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: #ffffff;
+            color: #07090f;
+            font-weight: 600;
+            padding: 1.1rem 2.25rem;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .btn-schedule:hover {
+            background-color: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        .hero-bottom-info {
+            max-width: 90rem;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        /* Playbill Section */
+        .playbill-section {
+            background-color: var(--bg-content);
+            color: var(--text-main);
+            padding: 7rem 2.5rem 9rem 2.5rem;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .playbill-container {
+            max-width: 90rem;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            display: block;
+        }
+
+        .playbill-header {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin-bottom: 4.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .playbill-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-end;
+            }
+        }
+
+        .playbill-title-area h2 {
+            font-size: clamp(2.25rem, 4.5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.12;
+            margin-bottom: 1.25rem;
+        }
+
+        .playbill-title-area p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            max-width: 38rem;
+            line-height: 1.6;
+        }
+
+        .playbill-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        @media (min-width: 1024px) {
+            .playbill-controls {
+                align-items: flex-end;
+            }
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            background-color: var(--pill-inactive-bg);
+            color: var(--pill-inactive-text);
+            border: 1px solid var(--pill-inactive-border);
+            padding: 0.65rem 1.4rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pill-btn.active, .pill-btn:hover {
+            background-color: var(--pill-active-bg);
+            color: var(--pill-active-text);
+            border-color: var(--pill-active-bg);
+        }
+
+        .date-month-indicator {
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Lecture Cards Grid */
+        .lecture-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .lecture-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .lecture-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .lecture-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+        }
+
+        .lecture-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+        }
+
+        .card-img-wrap {
+            position: relative;
+            width: 100%;
+            height: 15rem;
+            overflow: hidden;
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .lecture-card:hover .card-img-wrap img {
+            transform: scale(1.05);
+        }
+
+        .category-badge {
+            position: absolute;
+            top: 1.25rem;
+            left: 1.25rem;
+            background-color: rgba(255, 255, 255, 0.92);
+            color: #0f172a;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 0.35rem 0.8rem;
+            border-radius: 0.25rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+        }
+
+        html.dark .category-badge {
+            background-color: rgba(15, 23, 42, 0.88);
+            color: #f8fafc;
+        }
+
+        .card-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .card-datetime {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            letter-spacing: 0.05em;
+        }
+
+        .card-main-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.28;
+            letter-spacing: -0.01em;
+        }
+
+        .speaker-name {
+            font-size: 0.98rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .speaker-degree {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .card-footer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--card-border);
+            padding-top: 1.25rem;
+            margin-top: auto;
+        }
+
+        .seats-status {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .seats-dot {
+            width: 0.45rem;
+            height: 0.45rem;
+            background-color: #10b981;
+            border-radius: 50%;
+        }
+
+        .seats-dot.waiting {
+            background-color: #f59e0b;
+        }
+
+        .arrow-icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .lecture-card:hover .arrow-icon-btn {
+            transform: translateX(4px);
+            color: var(--accent-blue);
+        }
+
+        .playbill-bottom-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 4.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--card-border);
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.925rem;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .playbill-bottom-bar {
+                flex-direction: row;
+            }
+        }
+
+        .full-prog-link {
+            font-weight: 700;
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .full-prog-link:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Feedback / Registration Section */
+        .register-section {
+            background-color: var(--bg-register);
+            color: var(--text-main);
+            padding: 7rem 2.5rem 9rem 2.5rem;
+            border-top: 1px solid var(--card-border);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .register-container {
+            max-width: 90rem;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .register-container {
+                grid-template-columns: 1fr 1fr;
+                gap: 7rem;
+            }
+        }
+
+        .register-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .register-info-col h2 {
+            font-size: clamp(2.3rem, 4.5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.12;
+            letter-spacing: -0.01em;
+        }
+
+        .register-info-col p {
+            font-size: 1.125rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.75rem;
+            font-weight: 600;
+            font-size: 0.98rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .benefit-item svg {
+            color: var(--accent-blue);
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .wireframe-globe-box {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            color: var(--accent-blue);
+            font-family: monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Form Card */
+        .form-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.25rem;
+            padding: 3rem;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .alert-banner {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 1.15rem;
+            border-radius: 0.625rem;
+            font-size: 0.88rem;
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+        }
+
+        html.dark .alert-banner {
+            background-color: rgba(153, 27, 27, 0.2);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.95rem 1.15rem;
+            background-color: transparent;
+            border: 1px solid var(--card-border);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-main);
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(43, 82, 219, 0.15);
+        }
+
+        .form-input.valid {
+            border-color: #10b981;
+        }
+
+        .form-input.invalid {
+            border-color: #ef4444;
+        }
+
+        .input-icon-status {
+            position: absolute;
+            right: 1.15rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .helper-text {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .helper-text.success {
+            color: #10b981;
+        }
+
+        .helper-text.error {
+            color: #ef4444;
+        }
+
+        .btn-register-submit {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 1.1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-register-submit:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+        .form-fineprint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            text-align: center;
+        }
+
+        .success-state-box {
+            display: none;
+            text-align: center;
+            padding: 2.5rem 0;
+        }
+
+        .success-state-box h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #10b981;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: var(--bg-footer);
+            color: var(--text-main);
+            padding: 6rem 2.5rem 3.5rem 2.5rem;
+            border-top: 1px solid var(--card-border);
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .footer-container {
+            max-width: 90rem;
+            margin: 0 auto;
+        }
+
+        .partners-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+            padding-bottom: 4.5rem;
+            border-bottom: 1px solid var(--card-border);
+            margin-bottom: 4.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .partners-row {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .partner-block h5 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-blue);
+            margin-bottom: 0.85rem;
+        }
+
+        .partner-block p, .partner-block a {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .partner-subtext {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-top: 0.3rem;
+        }
+
+        .footer-main-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3.5rem;
+            padding-bottom: 4.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        @media (min-width: 1024px) {
+            .footer-main-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+        }
+
+        .footer-brand-col {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .footer-brand-col .logo-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .footer-brand-col p {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            max-width: 23rem;
+            line-height: 1.6;
+        }
+
+        .footer-col h6 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .footer-col a {
+            font-size: 0.98rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent-blue);
+        }
+
+        .footer-bottom-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+            padding-top: 2.25rem;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .footer-bottom-bar {
+                flex-direction: row;
+            }
+        }
+
+        .legal-links {
+            display: flex;
+            gap: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .appearance-toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+        }
+
+        .appearance-btns {
+            display: flex;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 9999px;
+            padding: 0.3rem;
+            gap: 0.25rem;
+        }
+
+        .appearance-btn {
+            background: transparent;
+            border: none;
+            padding: 0.45rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .appearance-btn.active {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Nav Component -->
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15.3 15.3 0 010 18M12 3a15.3 15.3 0 000 18"/></svg>
+                Cosmos Nearby
+            </a>
+            <nav class="nav-links">
+                <a href="#playbill">Playbill</a>
+                <a href="#speakers">Speakers</a>
+                <a href="#podcasts">Podcasts</a>
+            </nav>
+            <div class="nav-right">
+                <button class="btn-ticket" onclick="scrollToRegister()">
+                    Buy a Ticket &rarr;
+                </button>
+                <button class="burger-btn" id="burgerToggle" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <button class="close-drawer" id="closeDrawer">&times;</button>
+        <div class="mobile-links" style="margin-top: 4.5rem;">
+            <a href="#playbill" onclick="toggleMobileMenu()">Playbill</a>
+            <a href="#speakers" onclick="toggleMobileMenu()">Speakers</a>
+            <a href="#podcasts" onclick="toggleMobileMenu()">Podcasts</a>
+            <a href="#register" onclick="toggleMobileMenu()">Online Broadcasts</a>
+        </div>
+        <button class="btn-ticket" style="width: 100%; justify-content: center;" onclick="toggleMobileMenu(); scrollToRegister();">
+            Buy a Ticket &rarr;
+        </button>
+    </div>
+
+    <main>
+
+        <!-- Hero Section Component -->
+        <section class="hero-section">
+            <div class="hero-top-info">
+                <span>Astronomy. Without the distance.</span>
+                <span>Season 06 / November 2026</span>
+            </div>
+
+            <div class="hero-content">
+                <h1 class="hero-title">Simply About the Structure of the Universe</h1>
+                <p class="hero-description">Big questions. Real scientists. A lecture hall for everyone who has ever looked up and wondered.</p>
+                <a href="#playbill" class="btn-schedule">
+                    Explore the schedule &rarr;
+                </a>
+            </div>
+
+            <div class="hero-bottom-info">
+                <span>• No science degree required</span>
+                <span>M31 · Andromeda Galaxy / 2.5m light-years away</span>
+            </div>
+        </section>
+
+        <!-- Playbill Section (01 / THE PLAYBILL) -->
+        <section class="playbill-section" id="playbill">
+            <div class="playbill-container">
+                
+                <div class="playbill-header">
+                    <div class="playbill-title-area">
+                        <span class="section-tag">01 / The Playbill</span>
+                        <h2>A wider perspective starts here.</h2>
+                        <p>From our closest neighbour to the edges of the observable universe. Meet the people asking the big questions.</p>
+                    </div>
+                    
+                    <div class="playbill-controls">
+                        <div class="filter-pills">
+                            <button class="pill-btn active" onclick="filterLectures('all', this)">All lectures</button>
+                            <button class="pill-btn" onclick="filterLectures('hall', this)">In the hall</button>
+                            <button class="pill-btn" onclick="filterLectures('online', this)">Online</button>
+                        </div>
+                        <span class="date-month-indicator">November 2026</span>
+                    </div>
+                </div>
+
+                <!-- Lecture Cards Grid (6 items) -->
+                <div class="lecture-grid" id="lectureGrid">
+
+                    <!-- Card 1 -->
+                    <article class="lecture-card" data-category="hall">
+                        <div class="card-img-wrap">
+                            <span class="category-badge">Our Solar System</span>
+                            <img src="https://placehold.co/600x400/1e293b/38bdf8?text=The+Moon" alt="The Moon" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Lecture'">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-datetime">
+                                <span>12 NOV · THU</span>
+                                <span>19:00–20:15</span>
+                            </div>
+                            <div class="card-main-info">
+                                <h3 class="card-title">The Moon is not a quiet place</h3>
+                                <div class="speaker-name">Dr. Eleanor Shaw</div>
+                                <div class="speaker-degree">PhD in Planetary Science</div>
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="seats-status">
+                                    <span class="seats-dot"></span> 24 seats available
+                                </div>
+                                <button class="arrow-icon-btn" aria-label="View lecture">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="lecture-card" data-category="hall" id="speakers">
+                        <div class="card-img-wrap">
+                            <span class="category-badge">Extreme Physics</span>
+                            <img src="https://placehold.co/600x400/0f172a/818cf8?text=Black+Hole" alt="Black Hole" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Lecture'">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-datetime">
+                                <span>14 NOV · SAT</span>
+                                <span>18:00–19:15</span>
+                            </div>
+                            <div class="card-main-info">
+                                <h3 class="card-title">What happens at the edge of a black hole?</h3>
+                                <div class="speaker-name">Prof. Marcus Reed</div>
+                                <div class="speaker-degree">DPhil in Astrophysics</div>
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="seats-status">
+                                    <span class="seats-dot waiting"></span> 8 seats remaining
+                                </div>
+                                <button class="arrow-icon-btn" aria-label="View lecture">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 3 -->
+                    <article class="lecture-card" data-category="online" id="podcasts">
+                        <div class="card-img-wrap">
+                            <span class="category-badge">Stellar Evolution</span>
+                            <img src="https://placehold.co/600x400/1e1b4b/c084fc?text=Stellar+Nebula" alt="Stellar Nebula" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Lecture'">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-datetime">
+                                <span>18 NOV · WED</span>
+                                <span>19:00–20:15</span>
+                            </div>
+                            <div class="card-main-info">
+                                <h3 class="card-title">We are made of other stars</h3>
+                                <div class="speaker-name">Dr. Priya Nair</div>
+                                <div class="speaker-degree">PhD in Stellar Astrophysics</div>
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="seats-status">
+                                    <span class="seats-dot"></span> 36 seats available
+                                </div>
+                                <button class="arrow-icon-btn" aria-label="View lecture">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 4 -->
+                    <article class="lecture-card" data-category="hall">
+                        <div class="card-img-wrap">
+                            <span class="category-badge">Life With A Star</span>
+                            <img src="https://placehold.co/600x400/451a03/fbbf24?text=Solar+Flare" alt="Solar Flare" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Lecture'">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-datetime">
+                                <span>21 NOV · SAT</span>
+                                <span>16:00–17:15</span>
+                            </div>
+                            <div class="card-main-info">
+                                <h3 class="card-title">Getting to know our nearest star</h3>
+                                <div class="speaker-name">Dr. Sofia Alvarez</div>
+                                <div class="speaker-degree">PhD in Solar Physics</div>
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="seats-status">
+                                    <span class="seats-dot"></span> 42 seats available
+                                </div>
+                                <button class="arrow-icon-btn" aria-label="View lecture">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 5 -->
+                    <article class="lecture-card" data-category="online">
+                        <div class="card-img-wrap">
+                            <span class="category-badge">The Big Picture</span>
+                            <img src="https://placehold.co/600x400/030712/38bdf8?text=Galaxy+Cluster" alt="Galaxy Cluster" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Lecture'">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-datetime">
+                                <span>25 NOV · WED</span>
+                                <span>19:00–20:15</span>
+                            </div>
+                            <div class="card-main-info">
+                                <h3 class="card-title">The universe we cannot see</h3>
+                                <div class="speaker-name">Prof. Daniel Okafor</div>
+                                <div class="speaker-degree">PhD in Cosmology</div>
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="seats-status">
+                                    <span class="seats-dot waiting"></span> 18 seats available
+                                </div>
+                                <button class="arrow-icon-btn" aria-label="View lecture">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 6 -->
+                    <article class="lecture-card" data-category="hall">
+                        <div class="card-img-wrap">
+                            <span class="category-badge">Searching For Life</span>
+                            <img src="https://placehold.co/600x400/0f172a/38bdf8?text=Radio+Telescope" alt="Radio Telescope" onerror="this.src='https://placehold.co/600x400/1e293b/38bdf8?text=Lecture'">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-datetime">
+                                <span>28 NOV · SAT</span>
+                                <span>18:00–19:15</span>
+                            </div>
+                            <div class="card-main-info">
+                                <h3 class="card-title">Is anybody else out there?</h3>
+                                <div class="speaker-name">Dr. James Chen</div>
+                                <div class="speaker-degree">PhD in Radio Astronomy</div>
+                            </div>
+                            <div class="card-footer-info">
+                                <div class="seats-status">
+                                    <span class="seats-dot waiting"></span> Join the waiting list
+                                </div>
+                                <button class="arrow-icon-btn" aria-label="View lecture">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+                <div class="playbill-bottom-bar">
+                    <div>All times GMT · Tickets from £12 · Every lecture includes a live Q&A.</div>
+                    <a href="#register" class="full-prog-link">
+                        View the full programme &rarr;
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Feedback & Registration Section (02 / A FRONT ROW, FROM ANYWHERE) -->
+        <section class="register-section" id="register">
+            <div class="register-container">
+                
+                <div class="register-info-col">
+                    <span class="section-tag">02 / A Front Row, From Anywhere</span>
+                    <h2>The universe. Delivered to you.</h2>
+                    <p>Can't make it to the hall? Register for our free online broadcasts. We'll send a viewing link before each talk, so you never miss a discovery.</p>
+                    
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Live Q&A
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Free to join
+                        </div>
+                        <div class="benefit-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                            Replay access
+                        </div>
+                    </div>
+
+                    <div class="wireframe-globe-box">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15.3 15.3 0 010 18M12 3a15.3 15.3 0 000 18"/></svg>
+                        <span>Transmitting ideas.<br>Not just signals.</span>
+                    </div>
+                </div>
+
+                <!-- Registration Card & Validation States Matching Reference -->
+                <div class="form-card">
+                    
+                    <!-- Alert Banner -->
+                    <div class="alert-banner" id="formAlertBanner">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-top: 0.1rem;"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        <div>
+                            <strong>Almost there — check your email address.</strong><br>
+                            Registration not sent. Please correct the field below and try again.
+                        </div>
+                    </div>
+
+                    <form id="onlineRegForm" onsubmit="handleRegistration(event)">
+                        
+                        <!-- Name Field (Valid State) -->
+                        <div class="form-group" style="margin-bottom: 1.25rem;">
+                            <label class="form-label" for="regName">Name</label>
+                            <div class="input-wrapper">
+                                <input type="text" id="regName" class="form-input valid" value="Alex Morgan" required oninput="validateFormLive()">
+                                <div class="input-icon-status">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                </div>
+                            </div>
+                            <span class="helper-text success">Name looks good.</span>
+                        </div>
+
+                        <!-- Email Field (Invalid Error State matching reference image) -->
+                        <div class="form-group" style="margin-bottom: 1.5rem;">
+                            <label class="form-label" for="regEmail">Email</label>
+                            <div class="input-wrapper">
+                                <input type="email" id="regEmail" class="form-input invalid" value="alex@" required oninput="validateFormLive()">
+                                <div class="input-icon-status">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                </div>
+                            </div>
+                            <span class="helper-text error" id="emailErrorMsg">Enter a complete email address, for example alex@example.com.</span>
+                        </div>
+
+                        <button type="submit" class="btn-register-submit" style="width: 100%;">
+                            Register for broadcasts &rarr;
+                        </button>
+
+                    </form>
+
+                    <div class="success-state-box" id="successStateBox">
+                        <h3>You're on the list!</h3>
+                        <p style="color: var(--text-muted);">We have sent a viewing link and details to your email address.</p>
+                    </div>
+
+                    <div class="form-fineprint">
+                        By registering, you agree to our Privacy Policy. We'll only email you about broadcasts. Unsubscribe at any time.
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Component -->
+    <footer id="partners">
+        <div class="footer-container">
+            
+            <!-- Partner Observatories ("IN GOOD COMPANY") -->
+            <div class="partners-row">
+                <div class="partner-block">
+                    <h5>In Good Company</h5>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Our partner observatories</p>
+                </div>
+                <div class="partner-block">
+                    <a href="#" onclick="return false;">Royal Observatory</a>
+                    <div class="partner-subtext">Greenwich · Est. 1675</div>
+                </div>
+                <div class="partner-block">
+                    <a href="#" onclick="return false;">Jodrell Bank</a>
+                    <div class="partner-subtext">University of Manchester</div>
+                </div>
+                <div class="partner-block">
+                    <a href="#" onclick="return false;">ESO</a>
+                    <div class="partner-subtext">European Southern Observatory</div>
+                </div>
+            </div>
+
+            <!-- Main Footer Links & Brand -->
+            <div class="footer-main-grid">
+                <div class="footer-brand-col">
+                    <div class="logo-text">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b52db" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15.3 15.3 0 010 18M12 3a15.3 15.3 0 000 18"/></svg>
+                        Cosmos Nearby
+                    </div>
+                    <p>An independent astronomy lecture hall. Bringing the extraordinary a little closer.</p>
+                </div>
+
+                <div class="footer-col">
+                    <h6>Say Hello</h6>
+                    <ul>
+                        <li><a href="mailto:hello@cosmosnearby.org">hello@cosmosnearby.org</a></li>
+                        <li><span style="font-size: 0.95rem; color: var(--text-muted);">Lecture Hall 01 · London, UK</span></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h6>Keep Exploring</h6>
+                    <ul>
+                        <li><a href="#" onclick="return false;">Instagram &rarr;</a></li>
+                        <li><a href="#" onclick="return false;">YouTube &rarr;</a></li>
+                        <li><a href="#" onclick="return false;">Telegram &rarr;</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar with Theme Toggle -->
+            <div class="footer-bottom-bar">
+                <div>&copy; 2026 Cosmos Nearby. All rights reserved.</div>
+                
+                <div class="legal-links">
+                    <a href="#" onclick="return false;">Privacy Policy</a>
+                    <a href="#" onclick="return false;">Terms of Use</a>
+                    <a href="#" onclick="return false;">Accessibility</a>
+                </div>
+
+                <div class="appearance-toggle-group">
+                    <span>Appearance</span>
+                    <div class="appearance-btns">
+                        <button class="appearance-btn active" id="lightThemeBtn" onclick="setTheme('light')">
+                            Light &check;
+                        </button>
+                        <button class="appearance-btn" id="darkThemeBtn" onclick="setTheme('dark')">
+                            &🌙 Dark
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Mobile Drawer Management
+        const burgerToggle = document.getElementById('burgerToggle');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const closeDrawer = document.getElementById('closeDrawer');
+
+        burgerToggle.addEventListener('click', () => {
+            mobileDrawer.classList.add('active');
+        });
+
+        closeDrawer.addEventListener('click', () => {
+            mobileDrawer.classList.remove('active');
+        });
+
+        function toggleMobileMenu() {
+            mobileDrawer.classList.remove('active');
+        }
+
+        // Smooth scroll
+        function scrollToRegister() {
+            document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Filter Lectures Playbill
+        function filterLectures(category, btnElement) {
+            const pills = document.querySelectorAll('.pill-btn');
+            pills.forEach(p => p.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const cards = document.querySelectorAll('.lecture-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Live Form Validation matching reference screenshot state
+        function validateFormLive() {
+            const emailInput = document.getElementById('regEmail');
+            const alertBanner = document.getElementById('formAlertBanner');
+            const emailVal = emailInput.value;
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(emailVal)) {
+                emailInput.classList.remove('invalid');
+                emailInput.classList.add('valid');
+                alertBanner.style.display = 'none';
+            } else {
+                emailInput.classList.remove('valid');
+                emailInput.classList.add('invalid');
+            }
+        }
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('regEmail');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(emailInput.value)) {
+                document.getElementById('formAlertBanner').style.display = 'flex';
+                return;
+            }
+
+            document.getElementById('onlineRegForm').style.display = 'none';
+            document.getElementById('formAlertBanner').style.display = 'none';
+            document.getElementById('successStateBox').style.display = 'block';
+        }
+
+        // Theme Switcher (Light / Dark)
+        function setTheme(theme) {
+            const htmlEl = document.documentElement;
+            const lightBtn = document.getElementById('lightThemeBtn');
+            const darkBtn = document.getElementById('darkThemeBtn');
+
+            if (theme === 'dark') {
+                htmlEl.classList.remove('light');
+                htmlEl.classList.add('dark');
+                darkBtn.classList.add('active');
+                lightBtn.classList.remove('active');
+                lightBtn.innerHTML = 'Light';
+                darkBtn.innerHTML = '🌙 Dark &check;';
+            } else {
+                htmlEl.classList.remove('dark');
+                htmlEl.classList.add('light');
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+                lightBtn.innerHTML = 'Light &check;';
+                darkBtn.innerHTML = '🌙 Dark';
+            }
+        }
+    </script>
+</body>
+</html>
